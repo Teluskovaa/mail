@@ -1,0 +1,22 @@
+#6
+import pandas as pd
+PlayTennis = pd.read_csv("tennis.csv")
+print("Given dataset:\n", PlayTennis,"\n")
+from sklearn.preprocessing import LabelEncoder
+Le = LabelEncoder()
+PlayTennis['Outlook'] = Le.fit_transform(PlayTennis['Outlook'])
+PlayTennis['Temperature'] = Le.fit_transform(PlayTennis['Temperature'])
+PlayTennis['Humidity'] = Le.fit_transform(PlayTennis['Humidity'])
+PlayTennis['Wind'] = Le.fit_transform(PlayTennis['Wind'])
+PlayTennis['PlayTennis'] = Le.fit_transform(PlayTennis['PlayTennis'])
+print("the encoded dataset is:\n",PlayTennis)
+X = PlayTennis.drop(['PlayTennis'],axis=1) 
+y = PlayTennis['PlayTennis'] 
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score
+X_train, X_test, y_train, y_test = train_test_split(X,y, test_size=0.20)
+classifier = GaussianNB()
+classifier.fit(X_train,y_train)
+accuracy = accuracy_score(classifier.predict(X_test),y_test)
+print("\n Accuracy is:",accuracy)
